@@ -15,6 +15,7 @@ import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 import static spark.Spark.get; 
 import static spark.Spark.post; 
+import static spark.Spark.port; 
 
 public class App {
     public String getGreeting() {
@@ -26,6 +27,8 @@ public class App {
 
         Logger logger = LogManager.getLogger(App.class);
         logger.error("hello world");
+
+        port(Integer.parseInt(System.getenv("PORT")));
 
         get("/", (req, res) -> "hello world");
 
