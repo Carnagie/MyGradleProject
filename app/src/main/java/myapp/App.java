@@ -32,7 +32,7 @@ public class App {
 
         port(port);
 
-        get("/", (req, res) -> "hello world");
+        get("/", (req, res) -> "Go to /compute page <br> there are 3 arguments first one is array of strings seperated with \\n characters <br> second one accepts string character until \\n character, <br> third one accepts string character until \\n character  <br> then returns false if swap operation cant be done,  true if can and done.");
 
         get("/compute",
             (rq, rs) -> {
@@ -47,39 +47,92 @@ public class App {
 
             String input1 = req.queryParams("input1");
             java.util.Scanner sc1 = new java.util.Scanner(input1);
-            sc1.useDelimiter("[;\r\n]+");
-            java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+            sc1.useDelimiter("[;\n]+");
+            String[] arg = new String[10];
+            //java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+            int current = 0;
+            int maxIndex = arg.length;
             while (sc1.hasNext()) {
-                int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
-                inputList.add(value);
+                if ( current == maxIndex ){
+                    String[] newArg = new String[maxIndex*2];
+                    for(int i=0;i<arg.length;i++){
+                        newArg[i] = arg[i];
+                    }
+                    arg = newArg;
+                    maxIndex = maxIndex *2;
+                }
+                String value = sc1.next().replaceAll("\\s","");
+                arg[current] = value;
+                current = current + 1;
             }                        
             sc1.close();
-            System.out.println(inputList);
 
             String input2 = req.queryParams("input2").replaceAll("\\s","");
-            int input2AsInt = Integer.parseInt(input2);
 
-            boolean result = App.search(inputList, input2AsInt);
+            String input3 = req.queryParams("input3").replaceAll("\\s","");
+
+            boolean result = App.swap(arg, input2, input3);
+
+            for(int i=0; i<arg.length;i++){
+                System.out.print(arg[i] + " ");
+            }
 
             Map<String, Boolean> map = new HashMap<String, Boolean>();
             map.put("result",result);
             return new ModelAndView(map,"compute.mustache");
         }, new MustacheTemplateEngine());
 
-
-
-
-
     }
 
-    public static boolean search(ArrayList<Integer> array, int e){
-        System.out.println("inside search");
+    public static boolean swap(String[] elementData, String x, String y) {
+    
+    if (x == y ){
+        throw new RuntimeException();
+    }
+    boolean flag1 = false;
+    boolean flag2 = false;
+    for(int i=0;i<elementData.length;i++){
 
-        if ( array == null) return false;
-
-        for(int elt : array) {
-            if ( elt == e ) return true;
+        if(elementData[i] == null){
+            elementData[i] = "";
         }
+        if(elementData[i].equals(x)){
+            flag1 = true;
+        }
+        if(elementData[i].equals(y)){
+            flag2 = true;
+        }
+    }
+    if( !flag1 || !flag2 ){
         return false;
     }
+    String temp1 = null;
+    int index1 = -1;
+    int index2 = -1;
+    for(int i=0;i<elementData.length;i++){
+        if(elementData[i].equals(x)){
+            temp1 = x;
+            index1 = i;
+            break;
+        }
+    }
+    for(int i=elementData.length-1;-1<i;i--){
+        if(elementData[i].equals(y)){
+            index2 = i;
+            break;
+        }
+    }
+    if( temp1 == null || index1 == -1 || index2 == -1) {
+        return false;
+    }
+    else{
+        elementData[index1] = elementData[index2];
+        elementData[index2] = temp1;
+    }
+
+    return true;
+
+
+  }
+
 }
