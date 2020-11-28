@@ -5,4 +5,6 @@ Second commit for update
 [![Build Status](https://travis-ci.org/Carnagie/MyGradleProject.svg?branch=main)](https://travis-ci.org/Carnagie/MyGradleProject)
 
 
-feature/amazing
+feature/amazing // created with merge commit
+
+feature/xyz // squashed with merge commit
