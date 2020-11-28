@@ -7,4 +7,4 @@ Second commit for update
 
 feature/amazing // created with merge commit
 
-feature/amazing // squashed with merge commit
+feature/xyz // squashed with merge commit
